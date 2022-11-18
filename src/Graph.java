@@ -234,4 +234,57 @@ public class Graph {
             System.out.println(str);
         }
     }
+
+    public void BFS(int code1, int code2){
+        boolean temCaminho = false;
+        ArrayList<Integer> caminhoPercorrido = new ArrayList<Integer>();
+    
+        if(code1 == code2){
+            temCaminho = true;
+        }
+    
+        int tamanho = nodes.size();
+        Boolean visited[] = new Boolean[tamanho];
+        LinkedList<Integer> q = new LinkedList<Integer>();
+
+        visited[code1] = true;
+        q.add(code1);
+        caminhoPercorrido.add(code1);
+    
+        while(q.size() > 0){
+            code1 = q.poll();
+            //q.remove(0);
+    
+            for(int a : this.adjacentes(code1)) {
+                if(a == code2){
+                    temCaminho = true;
+                    caminhoPercorrido.add(a);
+                    break;
+                }
+                if(visited[a] == null ||!visited[a]){
+                    q.add(a);
+                    visited[a] = true;
+                    caminhoPercorrido.add(a);
+                }
+            }
+        }
+        if(temCaminho){
+            boolean fim = false;
+            int i = caminhoPercorrido.size()-1;
+            System.out.printf("\nExiste um caminho entre %d e %d",caminhoPercorrido.get(0),code2);
+    
+            while(fim == false){
+                if(caminhoPercorrido.get(i) == code2){
+                    fim = true;
+                }
+                else{
+                    caminhoPercorrido.remove(i);
+                }
+                i--;
+            }
+    
+            System.out.println(caminhoPercorrido);
+        }
+    }
+
 }

@@ -16,7 +16,16 @@ public class Menu extends ReadsInput {
         System.out.println("4 - Adicionar Aresta");
         System.out.println("5 - Remover Aresta");
         System.out.println("6 - Limpar grafo");
+        System.out.println("7 - Busca por largura");
         System.out.println("0 - Sair");
+
+        
+        graph.createNode(1, "Vertice 1");
+        graph.createNode(2, "Vertice 2");
+        graph.createNode(3, "Vertice 3");
+
+        graph.createConnection(1, 2);
+        graph.createConnection(2, 3);
     }
 
     public void render() throws Exception {
@@ -73,6 +82,11 @@ public class Menu extends ReadsInput {
                     remove = this.graph.clearGraph();
                     System.out.println(remove ? "Grafo removido!" : "O grafo ja está vazio.");
                     System.in.read();
+                    break;
+                case 7:
+                    System.out.println("- Busca por largura -");
+                    this.readCodes();
+                    this.graph.BFS(code1, code2);
                     break;
                 case 0:
                     exit = true;
