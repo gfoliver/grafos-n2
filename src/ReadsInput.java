@@ -14,7 +14,14 @@ public class ReadsInput {
     }
 
     protected void readCodes() {
+        this.readCode1();
+        this.readCode2();
+    }
+    protected void readCode1() {
         code1 = readPositiveInteger("Digite o código do primeiro local: ");
+    }
+
+    protected void readCode2() {
         code2 = readPositiveInteger("Digite o código do segundo local: ");
     }
 

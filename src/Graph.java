@@ -137,49 +137,15 @@ public class Graph {
         return adj;
     }
 
-    public void printPath(int code1, int code2) throws Exception {
-        // Lista de codes já visitados durante a execução recursiva
-        ArrayList<Integer> visitados = new ArrayList<>();
+    public ArrayList<Integer> adjacenteDigraph(int code) {
+        ArrayList<Integer> adj = new ArrayList<>();
 
-        // Lista que guarda o caminho
-        ArrayList<String> caminho = new ArrayList<>();
-
-        // Adiciona o ponto de partida na lista de visitados e no caminho
-        visitados.add(code1);
-        Node current = this.byCode(code1);
-        caminho.add(current.getName());
-
-        // Inicia busca recursiva
-        recursivePrintPath(code1, code2, visitados, caminho);
-    }
-
-    public void recursivePrintPath(int code1, int code2, ArrayList<Integer> visitados, ArrayList<String> caminho) throws Exception
-    {
-        // Verifica se o code foi encontrado e printa o caminho
-        if (code1 == code2) {
-            System.out.println(caminho);
-            return;
+        for (Connection c : connections) {
+            if (c.passesThroughDigraph(code))
+                adj.add(c.otherCode(code));
         }
 
-        // Adiciona o code atual aos visitados para evitar repetições
-        visitados.add(code1);
-
-        // Itera pelos adjacentes do vertice atual
-        for (int a : this.adjacentes(code1)) {
-            // Verifica se o vertice atual ja foi visitado para evitar repetições
-            if (! visitados.contains(a)) {
-                // Buscar local pelo código para obter o name
-                Node l = this.byCode(a);
-                // Adiciona name ao caminho
-                caminho.add(l.getName());
-
-                // Continua busca recursiva nos adjacentes ao atual
-                recursivePrintPath(a, code2, visitados, caminho);
-
-                // Remove o atual do caminho, pois não encontrou o destino nos seus adjacentes
-                caminho.remove(l.getName());
-            }
-        }
+        return adj;
     }
 
     public void printNodes() {
@@ -235,6 +201,49 @@ public class Graph {
         }
     }
 
+    public void DSF(int code1) throws Exception{
+        // Lista de codes já visitados durante a execução recursiva
+        ArrayList<Integer> visited = new ArrayList<>();
+
+        // Lista que guarda o vertice e ordem de acesso
+        ArrayList<String> accessMap = new ArrayList<>();
+
+        // Variavel que guarda a ordem de acesso
+        int valency = 1;
+
+        // Adiciona o ponto de partida na lista de visitados e no caminho
+        visited.add(code1);
+        Node current = this.byCode(code1);
+        accessMap.add(current.getName() + " - Código: " + current.getCode() + " - Grau de acesso: " + valency);
+
+        // Inicia a busca em profundidade a partir do código do vértice informado
+        this.DepthFirstSearch(visited, accessMap, current, valency +1);
+
+        // Função que ordena os acessos, somente para melhor visualização
+        Collections.sort(accessMap);
+
+        // Imprime resultado da busca em profundidade
+        for (String a : accessMap){
+            System.out.println(a);
+        }
+    }
+
+    public void DepthFirstSearch (ArrayList<Integer> visited, ArrayList<String> accessMap, Node node, int valency) throws Exception{
+        for (int a : this.adjacenteDigraph(node.getCode())) {
+            // Verifica se o vertice atual ja foi visitado para evitar repetições
+            if (! visited.contains(a)) {
+                visited.add(a);
+                // Buscar local pelo código para obter o name
+                Node l = this.byCode(a);
+                // Adiciona name ao caminho
+                accessMap.add(l.getName() + " - Código: " +  l.getCode() + " - Grau de acesso: " + valency);
+
+                // Continua busca recursiva nos adjacentes ao atual
+                this.DepthFirstSearch(visited, accessMap, l,valency+1);
+            }
+        }
+    }
+
     public void BFS(int code1, int code2){
         boolean temCaminho = false;
         ArrayList<Integer> caminhoPercorrido = new ArrayList<Integer>();
@@ -253,7 +262,6 @@ public class Graph {
     
         while(q.size() > 0){
             code1 = q.poll();
-            //q.remove(0);
     
             for(int a : this.adjacentes(code1)) {
                 if(a == code2){
