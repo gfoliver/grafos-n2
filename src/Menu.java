@@ -6,6 +6,7 @@ public class Menu extends ReadsInput {
     public Menu() {
         super();
         this.graph = new Graph();
+        this.initGraph();
     }
 
     private void printOptions(){
@@ -17,15 +18,31 @@ public class Menu extends ReadsInput {
         System.out.println("5 - Remover Aresta");
         System.out.println("6 - Limpar grafo");
         System.out.println("7 - Busca por largura");
+        System.out.println("8 - Busca em profundidade");
         System.out.println("0 - Sair");
+    }
 
-        
-        graph.createNode(1, "Vertice 1");
-        graph.createNode(2, "Vertice 2");
-        graph.createNode(3, "Vertice 3");
+    public void initGraph(){
+        graph.createNode(1, "Vértice 1");
+        graph.createNode(2, "Vértice 2");
+        graph.createNode(3, "Vértice 3");
+        graph.createNode(4, "Vértice 4");
+        graph.createNode(5, "Vértice 5");
+        graph.createNode(6, "Vértice 6");
+        graph.createNode(7, "Vértice 7");
+        graph.createNode(8, "Vértice 8");
+        graph.createNode(9, "Vértice 9");
 
         graph.createConnection(1, 2);
-        graph.createConnection(2, 3);
+        graph.createConnection(1, 3);
+        graph.createConnection(2, 4);
+        graph.createConnection(3, 4);
+        graph.createConnection(3, 5);
+        graph.createConnection(4, 6);
+        graph.createConnection(5, 7);
+        graph.createConnection(5, 8);
+        graph.createConnection(6, 9);
+        graph.createConnection(7, 9);
     }
 
     public void render() throws Exception {
@@ -87,6 +104,11 @@ public class Menu extends ReadsInput {
                     System.out.println("- Busca por largura -");
                     this.readCodes();
                     this.graph.BFS(code1, code2);
+                    break;
+                case 8:
+                    System.out.println("- Busca em Profundidade -");
+                    this.readCode1();
+                    this.graph.DSF(code1);
                     break;
                 case 0:
                     exit = true;

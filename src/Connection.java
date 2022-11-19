@@ -25,6 +25,10 @@ public class Connection {
         return codes.contains(code);
     }
 
+    public boolean passesThroughDigraph(int code) {
+        return codes.get(0).equals(code);
+    }
+
     public boolean verify(int code1, int code2) {
         if (
                 (codes.get(0) == code1 && codes.get(1) == code2)
