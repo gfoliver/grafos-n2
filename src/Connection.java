@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Connection {
-    public static int emptyValue = 0;
+    public static int emptyValue = 10;
 
     private ArrayList<Integer> codes;
     private int value;

@@ -295,4 +295,115 @@ public class Graph {
         }
     }
 
+    public Connection betweenTwoCodes(int code1, int code2) throws Exception {
+        for (Connection c : connections) {
+            if (c.passesThrough(code1) && c.passesThrough(code2)) {
+                return c;
+            }
+        }
+
+        throw new Exception("Connection not found");
+    }
+
+    public void clearNodes() {
+        for (Node n : nodes) {
+            n.setParent(null);
+        }
+    }
+
+    // Algoritmo de Dijkstra
+    public ArrayList<Node> encontrarMenorCaminhoDijkstra(int code1, int code2) throws Exception {
+        ArrayList<Node> menorCaminho = new ArrayList<>();
+
+        Node verticeCaminho;
+        Node atual;
+        Node vizinho;
+
+        ArrayList<Node> naoVisitados = new ArrayList<>();
+        ArrayList<Node> visitados = new ArrayList<>();
+
+        // Adiciona a origem na lista do menor caminho
+        menorCaminho.add(this.byCode(code1));
+
+        // Colocando a distancias iniciais
+        for (Node n : this.nodes) {
+            // Node atual tem distancia zero, e todos os outros,
+            // 9999("infinita")
+            if (n.getCode() == code1) {
+                n.setDistance(0);
+            } else {
+                n.setDistance(9999);
+            }
+            // Insere o vertice na lista de vertices nao visitados
+            naoVisitados.add(n);
+        }
+
+        Collections.sort(naoVisitados);
+
+        // O algoritmo continua ate que todos os vertices sejam visitados
+        while (!naoVisitados.isEmpty()) {
+
+            // Toma-se sempre o vertice com menor distancia, que eh o primeiro
+            // da
+            // lista
+            atual = naoVisitados.get(0);
+
+            /*
+             * Para cada vizinho (cada aresta), calcula-se a sua possivel
+             * distancia, somando a distancia do vertice atual com a da aresta
+             * correspondente. Se essa distancia for menor que a distancia do
+             * vizinho, esta eh atualizada.
+             */
+            for (int a : this.adjacentes(atual.getCode())) {
+                vizinho = this.byCode(a);
+
+                if (!visitados.contains(a)) {
+                    // Comparando a distância do vizinho com a possível
+                    // distância
+                    Connection arestaAtualVizinho = this.betweenTwoCodes(atual.getCode(), vizinho.getCode());
+
+                    if (vizinho.getDistance() > (atual.getDistance() + arestaAtualVizinho.getValue()) ) {
+                        vizinho.setDistance(atual.getDistance() + arestaAtualVizinho.getValue());
+                        vizinho.setParent(atual);
+
+                        /*
+                         * Se o vizinho eh o vertice procurado, e foi feita uma
+                         * mudanca na distancia, a lista com o menor caminho
+                         * anterior eh apagada, pois existe um caminho menor
+                         * vertices pais, ateh o vertice origem.
+                         */
+                        if (vizinho.getCode() == code2) {
+                            menorCaminho.clear();
+                            verticeCaminho = vizinho;
+                            menorCaminho.add(vizinho);
+                            while (verticeCaminho.getParent() != null) {
+                                menorCaminho.add(verticeCaminho.getParent());
+                                verticeCaminho = verticeCaminho.getParent();
+                            }
+                            // Ordena a lista do menor caminho, para que ele
+                            // seja exibido da origem ao destino.
+                            Collections.sort(menorCaminho);
+
+                        }
+                    }
+                }
+
+            }
+            // Marca o vertice atual como visitado e o retira da lista de nao
+            // visitados
+            visitados.add(atual);
+            naoVisitados.remove(atual);
+            /*
+             * Ordena a lista, para que o vertice com menor distancia fique na
+             * primeira posicao
+             */
+
+            Collections.sort(naoVisitados);
+        }
+
+        this.clearNodes();
+
+        return menorCaminho;
+    }
+
 }
