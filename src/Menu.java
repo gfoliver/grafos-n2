@@ -19,6 +19,7 @@ public class Menu extends ReadsInput {
         System.out.println("6 - Limpar grafo");
         System.out.println("7 - Busca por largura");
         System.out.println("8 - Busca em profundidade");
+        System.out.println("9 - Busca Dijkstra");
         System.out.println("0 - Sair");
     }
 
@@ -109,6 +110,17 @@ public class Menu extends ReadsInput {
                     System.out.println("- Busca em Profundidade -");
                     this.readCode1();
                     this.graph.DSF(code1);
+                    break;
+                case 9:
+                    System.out.println("- Busca Dijkstra -");
+                    this.readCodes();
+                    try {
+                        ArrayList<Node> path = this.graph.encontrarMenorCaminhoDijkstra(code1, code2);
+                        System.out.println(path);
+                    }
+                    catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 0:
                     exit = true;
