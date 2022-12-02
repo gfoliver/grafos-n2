@@ -201,7 +201,7 @@ public class Graph {
         }
     }
 
-    public void DSF(int code1) throws Exception{
+    public void DSF(int code1, int code2) throws Exception{
         // Lista de codes já visitados durante a execução recursiva
         ArrayList<Integer> visited = new ArrayList<>();
 
@@ -222,9 +222,15 @@ public class Graph {
         // Função que ordena os acessos, somente para melhor visualização
         Collections.sort(accessMap);
 
-        // Imprime resultado da busca em profundidade
-        for (String a : accessMap){
-            System.out.println(a);
+        // Verifica se o caminho existe
+        if(!caminhoExiste(accessMap, code2)){
+            System.out.println("Não foi encontrado um caminho");
+        } else {
+            // Imprime resultado da busca em profundidade
+            System.out.println(String.format("Caminho entre %s e %s foi encontrado.", code1, code2));
+            for (String a : accessMap){
+                System.out.println(a);
+            }
         }
     }
 
@@ -293,6 +299,15 @@ public class Graph {
     
             System.out.println(caminhoPercorrido);
         }
+    }
+
+    public boolean caminhoExiste(ArrayList<String> accessMap, int codeFinal){
+        for (String a : accessMap){
+            if( a.contains("Código: " + codeFinal)){
+                return true;
+            }
+        }
+        return  false;
     }
 
     public Connection betweenTwoCodes(int code1, int code2) throws Exception {
