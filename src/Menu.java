@@ -40,9 +40,10 @@ public class Menu extends ReadsInput {
         graph.createConnection(3, 4);
         graph.createConnection(3, 5);
         graph.createConnection(4, 6);
-        graph.createConnection(6, 9);
-        graph.createConnection(5, 8);
         graph.createConnection(5, 7);
+        graph.createConnection(5, 8);
+        graph.createConnection(6, 9);
+        graph.createConnection(7, 9);
     }
 
     public void render() throws Exception {
