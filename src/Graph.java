@@ -255,10 +255,10 @@ public class Graph {
         }
     
         int tamanho = nodes.size();
-        Boolean visited[] = new Boolean[tamanho];
+        ArrayList<Integer> visited = new ArrayList<>();
         LinkedList<Integer> q = new LinkedList<Integer>();
 
-        visited[code1] = true;
+        visited.add(code1);
         q.add(code1);
         caminhoPercorrido.add(code1);
     
@@ -271,9 +271,9 @@ public class Graph {
                     caminhoPercorrido.add(a);
                     break;
                 }
-                if(visited[a] == null ||!visited[a]){
+                if(!visited.contains((int)a)){
                     q.add(a);
-                    visited[a] = true;
+                    visited.add((int)a);
                     caminhoPercorrido.add(a);
                 }
             }
