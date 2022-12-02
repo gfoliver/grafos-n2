@@ -108,8 +108,8 @@ public class Menu extends ReadsInput {
                     break;
                 case 8:
                     System.out.println("- Busca em Profundidade -");
-                    this.readCode1();
-                    this.graph.DSF(code1);
+                    this.readCodes();
+                    this.graph.DSF(code1, code2);
                     break;
                 case 9:
                     System.out.println("- Busca Dijkstra -");

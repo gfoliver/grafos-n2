@@ -201,7 +201,7 @@ public class Graph {
         }
     }
 
-    public void DSF(int code1) throws Exception{
+    public void DSF(int code1, int code2) throws Exception{
         // Lista de codes já visitados durante a execução recursiva
         ArrayList<Integer> visited = new ArrayList<>();
 
@@ -222,9 +222,11 @@ public class Graph {
         // Função que ordena os acessos, somente para melhor visualização
         Collections.sort(accessMap);
 
-        // Imprime resultado da busca em profundidade
-        for (String a : accessMap){
-            System.out.println(a);
+        // Verifica se o caminho existe
+        if(!caminhoExiste(accessMap, code2)){
+            System.out.println("Não foi encontrado um caminho");
+        } else {
+            this.imprimeProfundidadeDoCaminho(accessMap, code1,code2);
         }
     }
 
@@ -253,10 +255,10 @@ public class Graph {
         }
     
         int tamanho = nodes.size();
-        Boolean visited[] = new Boolean[tamanho];
+        ArrayList<Integer> visited = new ArrayList<>();
         LinkedList<Integer> q = new LinkedList<Integer>();
 
-        visited[code1] = true;
+        visited.add(code1);
         q.add(code1);
         caminhoPercorrido.add(code1);
     
@@ -269,9 +271,9 @@ public class Graph {
                     caminhoPercorrido.add(a);
                     break;
                 }
-                if(visited[a] == null ||!visited[a]){
+                if(!visited.contains((int)a)){
                     q.add(a);
-                    visited[a] = true;
+                    visited.add((int)a);
                     caminhoPercorrido.add(a);
                 }
             }
@@ -293,6 +295,39 @@ public class Graph {
     
             System.out.println(caminhoPercorrido);
         }
+    }
+
+    public void imprimeProfundidadeDoCaminho(ArrayList<String> accessMap, int code1, int code2){
+        String grauAcesso = this.grauDeAcesso(accessMap, code2);
+        // Imprime resultado da busca em profundidade
+        System.out.println(String.format("Caminho entre %s e %s foi encontrado.", code1, code2));
+        System.out.println("--------------------------");
+        System.out.println(grauAcesso);
+        System.out.println("--------------------------");
+        for (String a : accessMap){
+            System.out.println(a);
+            if(grauAcesso == a){
+                return;
+            }
+        }
+    }
+
+    public boolean caminhoExiste(ArrayList<String> accessMap, int codeFinal){
+        for (String a : accessMap){
+            if( a.contains("Código: " + codeFinal)){
+                return true;
+            }
+        }
+        return  false;
+    }
+
+    public String grauDeAcesso(ArrayList<String> accessMap, int codeFinal){
+        for (String a : accessMap){
+            if(a.contains("Código: " + codeFinal)){
+                return a;
+            }
+        }
+        return "";
     }
 
     public Connection betweenTwoCodes(int code1, int code2) throws Exception {
