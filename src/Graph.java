@@ -226,11 +226,7 @@ public class Graph {
         if(!caminhoExiste(accessMap, code2)){
             System.out.println("Não foi encontrado um caminho");
         } else {
-            // Imprime resultado da busca em profundidade
-            System.out.println(String.format("Caminho entre %s e %s foi encontrado.", code1, code2));
-            for (String a : accessMap){
-                System.out.println(a);
-            }
+            this.imprimeProfundidadeDoCaminho(accessMap, code1,code2);
         }
     }
 
@@ -301,6 +297,21 @@ public class Graph {
         }
     }
 
+    public void imprimeProfundidadeDoCaminho(ArrayList<String> accessMap, int code1, int code2){
+        String grauAcesso = this.grauDeAcesso(accessMap, code2);
+        // Imprime resultado da busca em profundidade
+        System.out.println(String.format("Caminho entre %s e %s foi encontrado.", code1, code2));
+        System.out.println("--------------------------");
+        System.out.println(grauAcesso);
+        System.out.println("--------------------------");
+        for (String a : accessMap){
+            System.out.println(a);
+            if(grauAcesso == a){
+                return;
+            }
+        }
+    }
+
     public boolean caminhoExiste(ArrayList<String> accessMap, int codeFinal){
         for (String a : accessMap){
             if( a.contains("Código: " + codeFinal)){
@@ -308,6 +319,15 @@ public class Graph {
             }
         }
         return  false;
+    }
+
+    public String grauDeAcesso(ArrayList<String> accessMap, int codeFinal){
+        for (String a : accessMap){
+            if(a.contains("Código: " + codeFinal)){
+                return a;
+            }
+        }
+        return "";
     }
 
     public Connection betweenTwoCodes(int code1, int code2) throws Exception {
